@@ -10,5 +10,5 @@ package Controlador;
  * @author Rafael
  */
 public class Controlador {
-    
+    //
 }
