@@ -37,24 +37,18 @@ USE `Restaurante` ;
 -- Table `Restaurante`.`funcionario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Restaurante`.`funcionario` (
-  `idFuncionario` INT(11) NOT NULL,
+  `idFuncionario` INT(11) NOT NULL AUTO_INCREMENT,
   `nomeFuncionario` CHAR(25) NOT NULL,
-  `funcaoFuncionario` CHAR(10) NOT NULL,
+  `funcaoFuncionario` CHAR(10) NULL,
   `tipoFuncionario` INT NOT NULL,
   `senhaFuncionario` VARCHAR(45) NOT NULL,
+  `fotoFuncionario` BLOB NOT NULL,
+  `loginFuncionario` VARCHAR(8) NOT NULL,
+  `cpfFuncionario` CHAR(11) NOT NULL,
+  `telefoneFuncionario` VARCHAR(10) NOT NULL,
+  `enderecoFuncionario` VARCHAR(200) NULL,
+  `celularFuncionario` VARCHAR(11) NULL,
   PRIMARY KEY (`idFuncionario`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
--- Table `Restaurante`.`ingrediente`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Restaurante`.`ingrediente` (
-  `idIngrediente` INT(11) NOT NULL,
-  `nomeIngrediente` CHAR(25) NOT NULL,
-  `descricaoIngrediente` VARCHAR(100) NULL DEFAULT NULL,
-  PRIMARY KEY (`idIngrediente`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
@@ -103,6 +97,8 @@ CREATE TABLE IF NOT EXISTS `Restaurante`.`produto` (
   `precoCompraProduto` FLOAT NOT NULL,
   `tamanhoProduto` VARCHAR(10) NULL,
   `Categoria_idCategoria` INT NOT NULL,
+  `fotoProduto` BLOB NULL,
+  `IngredienteProduto` VARCHAR(100) NULL,
   PRIMARY KEY (`idProduto`),
   INDEX `fk_produto_Categoria1_idx` (`Categoria_idCategoria` ASC),
   CONSTRAINT `fk_produto_Categoria1`
@@ -129,28 +125,6 @@ CREATE TABLE IF NOT EXISTS `Restaurante`.`item_pedido` (
     FOREIGN KEY (`Pedido_idPedido`)
     REFERENCES `Restaurante`.`pedido` (`idPedido`),
   CONSTRAINT `fk_item_pedido_produto1`
-    FOREIGN KEY (`produto_idProduto`)
-    REFERENCES `Restaurante`.`produto` (`idProduto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
--- Table `Restaurante`.`produto_ingrediente`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Restaurante`.`produto_ingrediente` (
-  `Ingrediente_idIngrediente` INT(11) NOT NULL,
-  `qntdPrato_Ingrediente` INT NOT NULL,
-  `produto_idProduto` INT(11) NOT NULL,
-  INDEX `Ingrediente_idIngrediente` (`Ingrediente_idIngrediente` ASC),
-  PRIMARY KEY (`Ingrediente_idIngrediente`, `produto_idProduto`),
-  INDEX `fk_prato_ingrediente_produto1_idx` (`produto_idProduto` ASC),
-  CONSTRAINT `prato_ingrediente_ibfk_2`
-    FOREIGN KEY (`Ingrediente_idIngrediente`)
-    REFERENCES `Restaurante`.`ingrediente` (`idIngrediente`),
-  CONSTRAINT `fk_prato_ingrediente_produto1`
     FOREIGN KEY (`produto_idProduto`)
     REFERENCES `Restaurante`.`produto` (`idProduto`)
     ON DELETE NO ACTION
