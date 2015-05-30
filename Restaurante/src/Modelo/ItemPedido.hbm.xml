@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16/05/2015 14:55:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Modelo.ItemPedido" table="item_pedido" catalog="restaurante" optimistic-lock="version">
+        <id name="idItemPedido" type="string">
+            <column name="idItem_pedido" length="45" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="pedido" class="Modelo.Pedido" fetch="select">
+            <column name="Pedido_idPedido" not-null="true" />
+        </many-to-one>
+        <many-to-one name="produto" class="Modelo.Produto" fetch="select">
+            <column name="produto_idProduto" not-null="true" />
+        </many-to-one>
+        <property name="precoItemPedido" type="float">
+            <column name="precoItem_Pedido" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="qtdItemPedido" type="int">
+            <column name="qtdItem_Pedido" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

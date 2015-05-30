@@ -38,11 +38,11 @@ USE `Restaurante` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Restaurante`.`funcionario` (
   `idFuncionario` INT(11) NOT NULL AUTO_INCREMENT,
-  `nomeFuncionario` CHAR(25) NOT NULL,
-  `funcaoFuncionario` CHAR(10) NULL,
+  `nomeFuncionario` CHAR(50) NOT NULL,
+  `funcaoFuncionario` CHAR(45) NULL,
   `tipoFuncionario` INT NOT NULL,
   `senhaFuncionario` VARCHAR(45) NOT NULL,
-  `fotoFuncionario` BLOB NOT NULL,
+  `fotoFuncionario` BLOB,
   `loginFuncionario` VARCHAR(8) NOT NULL,
   `cpfFuncionario` CHAR(11) NOT NULL,
   `telefoneFuncionario` VARCHAR(10) NOT NULL,
@@ -118,9 +118,10 @@ CREATE TABLE IF NOT EXISTS `Restaurante`.`item_pedido` (
   `Pedido_idPedido` INT(11) NOT NULL,
   `produto_idProduto` INT(11) NOT NULL,
   `qtdItem_Pedido` INT NOT NULL,
+  `idItem_pedido` VARCHAR(45) NOT NULL,
   INDEX `Pedido_idPedido` (`Pedido_idPedido` ASC),
   INDEX `fk_item_pedido_produto1_idx` (`produto_idProduto` ASC),
-  PRIMARY KEY (`Pedido_idPedido`, `produto_idProduto`),
+  PRIMARY KEY (`idItem_pedido`),
   CONSTRAINT `item_pedido_ibfk_1`
     FOREIGN KEY (`Pedido_idPedido`)
     REFERENCES `Restaurante`.`pedido` (`idPedido`),
@@ -136,3 +137,21 @@ DEFAULT CHARACTER SET = latin1;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+use restaurante;
+
+INSERT INTO Funcionario values (1, "Administrador do Sistema", "gerente de TI", 1, "admin", NULL, "admin", "12345678900", "12345678", "rua qualquer, n 0, nao interessa a cidade", "12345678");
+
+/*
+ `idFuncionario` INT(11) NOT NULL AUTO_INCREMENT,
+  `nomeFuncionario` CHAR(25) NOT NULL,
+  `funcaoFuncionario` CHAR(10) NULL,
+  `tipoFuncionario` INT NOT NULL,
+  `senhaFuncionario` VARCHAR(45) NOT NULL,
+  `fotoFuncionario` BLOB NOT NULL,
+  `loginFuncionario` VARCHAR(8) NOT NULL,
+  `cpfFuncionario` CHAR(11) NOT NULL,
+  `telefoneFuncionario` VARCHAR(10) NOT NULL,
+  `enderecoFuncionario` VARCHAR(200) NULL,
+  `celularFuncionario` VARCHAR(11) NULL,
+*/

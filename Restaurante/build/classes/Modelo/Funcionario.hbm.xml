@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16/05/2015 14:55:14 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Modelo.Funcionario" table="funcionario" catalog="restaurante" optimistic-lock="version">
+        <id name="idFuncionario" type="java.lang.Integer">
+            <column name="idFuncionario" />
+            <generator class="identity" />
+        </id>
+        <property name="nomeFuncionario" type="string">
+            <column name="nomeFuncionario" length="50" not-null="true" />
+        </property>
+        <property name="funcaoFuncionario" type="string">
+            <column name="funcaoFuncionario" length="45" />
+        </property>
+        <property name="tipoFuncionario" type="int">
+            <column name="tipoFuncionario" not-null="true" />
+        </property>
+        <property name="senhaFuncionario" type="string">
+            <column name="senhaFuncionario" length="45" not-null="true" />
+        </property>
+        <property name="fotoFuncionario" type="binary">
+            <column name="fotoFuncionario" />
+        </property>
+        <property name="loginFuncionario" type="string">
+            <column name="loginFuncionario" length="8" not-null="true" />
+        </property>
+        <property name="cpfFuncionario" type="string">
+            <column name="cpfFuncionario" length="11" not-null="true" />
+        </property>
+        <property name="telefoneFuncionario" type="string">
+            <column name="telefoneFuncionario" length="10" not-null="true" />
+        </property>
+        <property name="enderecoFuncionario" type="string">
+            <column name="enderecoFuncionario" length="200" />
+        </property>
+        <property name="celularFuncionario" type="string">
+            <column name="celularFuncionario" length="11" />
+        </property>
+        <set name="mesas" table="mesa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Funcionario_idFuncionario" not-null="true" />
+            </key>
+            <one-to-many class="Modelo.Mesa" />
+        </set>
+    </class>
+</hibernate-mapping>
