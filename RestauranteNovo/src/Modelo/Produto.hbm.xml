@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 14/06/2015 20:00:56 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Modelo.Produto" table="produto" catalog="restaurante" optimistic-lock="version">
+        <id name="idProduto" type="java.lang.Integer">
+            <column name="idProduto" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="categoria" class="Modelo.Categoria" fetch="select">
+            <column name="Categoria_idCategoria" />
+        </many-to-one>
+        <property name="dataValidadeProduto" type="timestamp">
+            <column name="dataValidadeProduto" length="19" />
+        </property>
+        <property name="nomeProduto" type="string">
+            <column name="nomeProduto" length="25" not-null="true" />
+        </property>
+        <property name="precoCompraProduto" type="double">
+            <column name="precoCompraProduto" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="precoVendaProduto" type="double">
+            <column name="precoVendaProduto" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="tamanhoProduto" type="string">
+            <column name="tamanhoProduto" length="10" />
+        </property>
+        <property name="fotoProduto" type="binary">
+            <column name="fotoProduto" />
+        </property>
+        <property name="ingredienteProduto" type="string">
+            <column name="IngredienteProduto" length="100" />
+        </property>
+        <set name="itemPedidos" table="item_pedido" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="produto_idProduto" not-null="true" />
+            </key>
+            <one-to-many class="Modelo.ItemPedido" />
+        </set>
+    </class>
+</hibernate-mapping>
