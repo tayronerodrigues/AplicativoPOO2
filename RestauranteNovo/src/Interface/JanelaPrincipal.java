@@ -28,6 +28,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     CadastroFuncionario cFuncionario;
     JanelaAltSenha jASenha;
     CadastroProduto cProduto;
+    CadastroCategoria cadCate;
     Funcionario funLogado = null;
     Produto prodSelecionado;
     Controlador control;
@@ -46,6 +47,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         jASenha = new JanelaAltSenha(this, true);
         cProduto = new CadastroProduto(this, true);
         selProd = new SelecionarProduto(this, true);
+        cadCate = new CadastroCategoria(this, true);
         txtnMesas.setText("10");
         qtdMesas = 10;
     }
@@ -202,7 +204,12 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        spnMesa.setModel(new javax.swing.SpinnerNumberModel(1, 0, 50, 1));
+        spnMesa.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
+        spnMesa.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnMesaStateChanged(evt);
+            }
+        });
 
         jLabel9.setText("Quantidade:");
 
@@ -426,7 +433,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        
+        cadCate.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -470,7 +477,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             if(ped != null){
                 ItemPedido item = new ItemPedido(ped, prodSelecionado, (prodSelecionado.getPrecoVendaProduto()*((int) spnQtd.getValue())), ((int) spnQtd.getValue()));
                 control.inserirItemPedido(item);
-                ped.setValorTotalPedido(item.getPrecoItemPedido());
+                ped.setValorTotalPedido(ped.getValorTotalPedido() + item.getPrecoItemPedido());
                 control.alterarPedido(ped);
             } else {
                 Mesa mesa = control.buscarMesa((int) spnMesa.getValue());//busca a mesa no banco para deixar na memoria
@@ -483,6 +490,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
             txtValor.setText("");
             txtProduto.setText("");
+            prodSelecionado = null;
         } else {
             JOptionPane.showMessageDialog(rootPane, "Selecione um produto");
         }
@@ -511,13 +519,19 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_cmbMesOcupItemStateChanged
+
+    private void spnMesaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnMesaStateChanged
+        if((int)spnMesa.getValue() > qtdMesas){
+            spnMesa.setValue(qtdMesas);
+        }
+    }//GEN-LAST:event_spnMesaStateChanged
     
     public List<Pedido> carregarPedidosAbertos(){
         return control.listarPedidosAbertos();
     }
     
     public void carregarComboMesas(){
-        List ped = carregarPedidosAbertos();
+        List<Pedido> ped = carregarPedidosAbertos();
         ArrayList<Mesa> mesas = new ArrayList();
         Iterator<Pedido> itped = ped.iterator();
         
@@ -527,8 +541,16 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         
         if (mesas != null) {
             cmbMesOcup.setModel(new DefaultComboBoxModel(mesas.toArray()));
+            
         } else {
             cmbMesOcup.setModel(new DefaultComboBoxModel());
+        }
+        
+        Mesa mesa = (Mesa) cmbMesOcup.getSelectedItem();
+        for (Pedido ped1 : ped) {
+            if (ped1.getMesa().toString().equals(mesa.toString())) {
+                txtValorTotal.setText(String.valueOf(ped1.getValorTotalPedido()));
+            }
         }
     }
     
@@ -538,7 +560,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             qtdMesas = nMesas;
         } else {
             qtdMesas = nMesas;
-            for(int i = 1; i < (nMesas - lstMesas.size());i++){
+            for(int i = 1; i <= (nMesas - lstMesas.size());i++){
                 control.inserirMesa(new Mesa());
             }
             txtnMesas.setText(String.valueOf(nMesas));
@@ -559,13 +581,12 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 break;    
             case 1:
                 mnCadastro.setVisible(true);
-                pnlFecharConta.setVisible(true);;
+                pnlFecharConta.setVisible(true);
                 pnlAddItem.setVisible(true);    
                 mnRelatorio.setVisible(true);
                 lblUsuario.setText(funLogado.getNomeFuncionario());
                 txtnMesas.setEditable(true);
                 btnOkMesas.setVisible(true);
-                carregarComboMesas();
                 break;
             default:
                 mnCadastro.setVisible(false);
@@ -575,7 +596,6 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 lblUsuario.setText("Nenhum");
                 btnOkMesas.setVisible(false);
                 txtnMesas.setEditable(false);
-                carregarComboMesas();
                 break;
         }
     }
